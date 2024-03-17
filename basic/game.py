@@ -127,7 +127,7 @@ while isGameOn:
 
   pygame.display.update() # 게임 화면을 다시 그리기!
 
-pygmae.time.delay(2000) # 2초 정도 대기
+pygame.time.delay(1000) # 1초 정도 대기
 
 # pygame 종료
 pygame.quit()
