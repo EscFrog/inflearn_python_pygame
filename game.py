@@ -10,6 +10,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # 화면 타이틀 설정
 pygame.display.set_caption("Escfrog Game") # 게임 이름
 
+# FPS
+clock = pygame.time.Clock()
+
 # 배경 이미지 불러오기
 background = pygame.image.load("assets/efgame_background.png")
 
@@ -23,34 +26,43 @@ character_height = character_size[1] # 캐릭터의 높이
 character_x_pos = (screen_width - character_width) / 2  # 화면 가로의 절반 크기의 해당하는 곳에 위치
 character_y_pos = screen_height - character_height # 화면 세로의 가장 아래에 해당하는 곳에 위치
 
+# 이동할 좌표
 move_x = 0
 move_y = 0
+
+# 이동 속도
+character_speed = 0.5
 
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True # 게임이 진행중인가?
 while isGameOn:
+  dt = clock.tick(60) # 게임화면의 초당 프레임 수를 설정
+  # print("fps : " + str(clock.get_fps()))
+
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       isGameOn = False
     
+    # 키 눌렀을 때 입력값 처리
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT:
-        move_x -= 5
+        move_x -= character_speed
       elif event.key == pygame.K_RIGHT:
-        move_x += 5
+        move_x += character_speed
       elif event.key == pygame.K_UP:
-        move_y -= 5
+        move_y -= character_speed
       elif event.key == pygame.K_DOWN:
-        move_y += 5
+        move_y += character_speed
 
+    # 키 뗏을 때 이벤트 처리
     if event.type == pygame.KEYUP:
       if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
         move_x = 0
       elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
         move_y = 0
 
-  character_x_pos += move_x
-  character_y_pos += move_y
+  character_x_pos += move_x * dt
+  character_y_pos += move_y * dt
 
   # 가로 경계값 처리
   if character_x_pos < 0:
