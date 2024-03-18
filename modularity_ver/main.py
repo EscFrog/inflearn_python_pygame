@@ -1,4 +1,5 @@
 # main.py
+import os
 import pygame
 import settings
 from game_objects import Character, Enemy
@@ -8,9 +9,14 @@ pygame.init()
 screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
 pygame.display.set_caption(settings.title)
 
-background = pygame.image.load("assets/efgame_background.png")
-character = Character("assets/efgame_character.png")
-enemy = Enemy("assets/efgame_enemy.png")
+current_dir = os.path.dirname(__file__)
+bg_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_background.png')
+character_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_character.png')
+enemy_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_enemy.png')
+
+background = pygame.image.load(bg_img_path)
+character = Character(character_img_path)
+enemy = Enemy(enemy_img_path)
 
 isGameOn = True
 clock = pygame.time.Clock()
