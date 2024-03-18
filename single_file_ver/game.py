@@ -14,10 +14,10 @@ pygame.display.set_caption("Escfrog Game") # 게임 이름
 clock = pygame.time.Clock()
 
 # 배경 이미지 불러오기
-background = pygame.image.load("../assets/efgame_background.png")
+background = pygame.image.load("assets/efgame_background.png")
 
 # 캐릭터 스프라이트 불러오기
-character = pygame.image.load("../assets/efgame_character.png")
+character = pygame.image.load("assets/efgame_character.png")
 character_size = character.get_rect().size # 이미지의 크기를 구해옴
 character_width = character_size[0] # 캐릭터의 넓이
 character_height = character_size[1] # 캐릭터의 높이
@@ -32,7 +32,7 @@ move_y = 0
 character_speed = 0.5
 
 # 적 캐릭터
-enemy = pygame.image.load("../assets/efgame_enemy.png")
+enemy = pygame.image.load("assets/efgame_enemy.png")
 enemy_size = enemy.get_rect().size # 이미지의 크기를 구해옴
 enemy_width = enemy_size[0] # 캐릭터의 넓이
 enemy_height = enemy_size[1] # 캐릭터의 높이
@@ -128,6 +128,5 @@ while isGameOn:
   pygame.display.update() # 게임 화면을 다시 그리기!
 
 pygame.time.delay(1000) # 1초 정도 대기
-
 # pygame 종료
 pygame.quit()
