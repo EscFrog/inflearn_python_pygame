@@ -1,3 +1,4 @@
+import os
 import pygame
 
 pygame.init() # 초기화 (반드시 필요)
@@ -13,11 +14,18 @@ pygame.display.set_caption("Escfrog Game") # 게임 이름
 # FPS
 clock = pygame.time.Clock()
 
+# 파일 경로 및 이미지 에셋 경로 설정
+current_dir = os.path.dirname(__file__)
+bg_img_path = os.path.join(current_dir, "..", 'assets', 'bg_desert.png')
+character_img_path = os.path.join(current_dir, "..", 'assets', 'character_girl.png')
+enemy_img_path = os.path.join(current_dir, "..", 'assets', 'enemy_zombie.png')
+
+
 # 배경 이미지 불러오기
-background = pygame.image.load("assets/efgame_background.png")
+background = pygame.image.load(bg_img_path)
 
 # 캐릭터 스프라이트 불러오기
-character = pygame.image.load("assets/efgame_character.png")
+character = pygame.image.load(character_img_path)
 character_size = character.get_rect().size # 이미지의 크기를 구해옴
 character_width = character_size[0] # 캐릭터의 넓이
 character_height = character_size[1] # 캐릭터의 높이
@@ -32,7 +40,7 @@ move_y = 0
 character_speed = 0.5
 
 # 적 캐릭터
-enemy = pygame.image.load("assets/efgame_enemy.png")
+enemy = pygame.image.load(enemy_img_path)
 enemy_size = enemy.get_rect().size # 이미지의 크기를 구해옴
 enemy_width = enemy_size[0] # 캐릭터의 넓이
 enemy_height = enemy_size[1] # 캐릭터의 높이

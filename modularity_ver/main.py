@@ -10,9 +10,9 @@ screen = pygame.display.set_mode((settings.screen_width, settings.screen_height)
 pygame.display.set_caption(settings.title)
 
 current_dir = os.path.dirname(__file__)
-bg_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_background.png')
-character_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_character.png')
-enemy_img_path = os.path.join(current_dir, "..", 'assets', 'efgame_enemy.png')
+bg_img_path = os.path.join(current_dir, "..", 'assets', 'bg_desert.png')
+character_img_path = os.path.join(current_dir, "..", 'assets', 'character_girl.png')
+enemy_img_path = os.path.join(current_dir, "..", 'assets', 'enemy_zombie.png')
 
 background = pygame.image.load(bg_img_path)
 character = Character(character_img_path)
