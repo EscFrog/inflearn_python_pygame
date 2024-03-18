@@ -47,27 +47,37 @@ enemy_y_pos = 0
 character_speed = 1
 enemy_speed = 0.5
 
-# character_move_x = 0
+character_x_move = 0
 
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True
 while isGameOn:
-  dt = clock.tick(30)
+  dt = clock.tick(60)
 
   # 2. 이벤트 처리 (키보드, 마우스 등)
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       isGameOn = False
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        character_x_pos -= character_speed * dt
-    if keys[pygame.K_RIGHT]:
-        character_x_pos += character_speed * dt
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_LEFT:
+        character_x_move -= character_speed
+      if event.key == pygame.K_RIGHT:
+        character_x_move += character_speed
+    
+    if event.type == pygame.KEYUP:
+      if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+        character_x_move = 0
 
   # 3. 게임 캐릭터 위치 정의
+  character_x_pos += character_x_move * dt
 
   # 4. 충돌 처리
+  # 가로 경계값 처리
+  if character_x_pos < 0:
+    character_x_pos = 0
+  elif character_x_pos > (screen_width - character_width):
+    character_x_pos = (screen_width - character_width)
   
   # 5. 화면에 그리기
   screen.blit(background, (0, 0)) # 배경 그리기
