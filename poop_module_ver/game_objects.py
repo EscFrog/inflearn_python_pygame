@@ -1,4 +1,5 @@
 import pygame
+import random
 import settings
 
 class Character(pygame.sprite.Sprite):
@@ -15,5 +16,9 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img_source)
         self.rect = self.image.get_rect()
-        self.rect.x = (settings.screen_width - self.rect.width) / 2
-        self.rect.y = (settings.screen_height / 2) - self.rect.height
+        self.rect.x = random.randint(0, settings.screen_width - self.rect.width)
+        self.rect.y = 0
+        self.speed = settings.enemy_speed
+    
+    def fall(self, dt):
+        self.rect.y += self.speed * dt

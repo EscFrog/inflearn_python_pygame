@@ -22,3 +22,4 @@ total_time = 120
 
 # 캐릭터와 적의 속도 설정
 character_speed = 0.5
+enemy_speed = 0.3
