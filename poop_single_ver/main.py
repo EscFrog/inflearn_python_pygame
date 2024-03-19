@@ -1,4 +1,5 @@
 import os
+import random
 import pygame
 ############################################################
 # 기본 초기화 (반드시 해야 하는 것들)
@@ -41,7 +42,8 @@ enemy = pygame.image.load(enemy_img_path)
 enemy_rect = enemy.get_rect()
 enemy_width = enemy_rect.width
 enemy_height = enemy_rect.height
-enemy_rect.x = (screen_width - enemy_width) / 2
+# enemy_rect.x = (screen_width - enemy_width) / 2
+enemy_rect.x = random.randint(0, screen_width - enemy_width)
 enemy_rect.y = 0
 
 character_speed = 1
@@ -50,7 +52,7 @@ enemy_speed = 0.5
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True
 while isGameOn:
-  dt = clock.tick(60)
+  dt = clock.tick(30)
 
   # 2. 이벤트 처리 (키보드, 마우스 등)
   for event in pygame.event.get():
@@ -64,6 +66,10 @@ while isGameOn:
       character_rect.x += character_speed * dt
     
   # 3. 게임 캐릭터 위치 정의
+  enemy_rect.y += enemy_speed * dt
+  if enemy_rect.y > screen_height:
+    enemy_rect.y = 0
+    enemy_rect.x = random.randint(0, screen_width - enemy_width) 
 
   # 4. 충돌 처리
   # 가로 경계값 처리
@@ -71,6 +77,10 @@ while isGameOn:
     character_rect.x = 0
   elif character_rect.x > (screen_width - character_width):
     character_rect.x = (screen_width - character_width)
+
+  # 적과 충돌하면 게임 종료
+  if character_rect.colliderect(enemy_rect):
+    isGameOn = False
   
   # 5. 화면에 그리기
   screen.blit(background, (0, 0)) # 배경 그리기
@@ -81,4 +91,5 @@ while isGameOn:
   pygame.display.update() # 게임 화면을 다시 그리기!
 
 # pygame 종료
+pygame.time.delay(1000)
 pygame.quit()
