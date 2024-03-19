@@ -30,24 +30,22 @@ clock = pygame.time.Clock()
 
 # 캐릭터 스프라이트 불러오기
 character = pygame.image.load(character_img_path)
-character_size = character.get_rect() # 이미지의 크기를 구해옴
-character_width = character_size.width # 캐릭터의 넓이
-character_height = character_size.height # 캐릭터의 높이
-character_x_pos = (screen_width - character_width) / 2  # 화면 가로의 절반 크기의 해당하는 곳에 위치
-character_y_pos = screen_height - character_height # 화면 세로의 가장 아래에 해당하는 곳에 위치
+character_rect = character.get_rect() # 이미지의 크기를 구해옴
+character_width = character_rect.width # 캐릭터의 넓이
+character_height = character_rect.height # 캐릭터의 높이
+character_rect.x = (screen_width - character_width) / 2  # 화면 가로의 절반 크기의 해당하는 곳에 위치
+character_rect.y = screen_height - character_height # 화면 세로의 가장 아래에 해당하는 곳에 위치
 
 # 적 스프라이트 불러오기
 enemy = pygame.image.load(enemy_img_path)
-enemy_size = enemy.get_rect()
-enemy_width = enemy_size.width
-enemy_height = enemy_size.height
-enemy_x_pos = (screen_width - enemy_width) / 2
-enemy_y_pos = 0
+enemy_rect = enemy.get_rect()
+enemy_width = enemy_rect.width
+enemy_height = enemy_rect.height
+enemy_rect.x = (screen_width - enemy_width) / 2
+enemy_rect.y = 0
 
 character_speed = 1
 enemy_speed = 0.5
-
-character_x_move = 0
 
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True
@@ -59,30 +57,25 @@ while isGameOn:
     if event.type == pygame.QUIT:
       isGameOn = False
 
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT:
-        character_x_move -= character_speed
-      if event.key == pygame.K_RIGHT:
-        character_x_move += character_speed
+  keys = pygame.key.get_pressed()
+  if keys[pygame.K_LEFT]:
+      character_rect.x -= character_speed * dt
+  if keys[pygame.K_RIGHT]:
+      character_rect.x += character_speed * dt
     
-    if event.type == pygame.KEYUP:
-      if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-        character_x_move = 0
-
   # 3. 게임 캐릭터 위치 정의
-  character_x_pos += character_x_move * dt
 
   # 4. 충돌 처리
   # 가로 경계값 처리
-  if character_x_pos < 0:
-    character_x_pos = 0
-  elif character_x_pos > (screen_width - character_width):
-    character_x_pos = (screen_width - character_width)
+  if character_rect.x < 0:
+    character_rect.x = 0
+  elif character_rect.x > (screen_width - character_width):
+    character_rect.x = (screen_width - character_width)
   
   # 5. 화면에 그리기
   screen.blit(background, (0, 0)) # 배경 그리기
-  screen.blit(character, (character_x_pos, character_y_pos))
-  screen.blit(enemy, (enemy_x_pos, enemy_y_pos))
+  screen.blit(character, (character_rect.x, character_rect.y))
+  screen.blit(enemy, (enemy_rect.x, enemy_rect.y))
 
 
   pygame.display.update() # 게임 화면을 다시 그리기!
