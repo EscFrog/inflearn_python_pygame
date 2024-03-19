@@ -1,5 +1,4 @@
 # main.py
-import os
 import pygame
 import settings
 from game_objects import Character, Enemy
@@ -9,17 +8,18 @@ pygame.init()
 screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
 pygame.display.set_caption(settings.title)
 
-current_dir = os.path.dirname(__file__)
-bg_img_path = os.path.join(current_dir, "..", 'assets', 'bg_desert.png')
-character_img_path = os.path.join(current_dir, "..", 'assets', 'character_girl.png')
-enemy_img_path = os.path.join(current_dir, "..", 'assets', 'enemy_zombie.png')
-
-background = pygame.image.load(bg_img_path)
-character = Character(character_img_path)
-enemy = Enemy(enemy_img_path)
+background = pygame.image.load(settings.bg_img_path)
+character = Character(settings.character_img_path)
+enemy = Enemy(settings.enemy_img_path)
 
 isGameOn = True
 clock = pygame.time.Clock()
+
+# 시간 시간 정보
+start_ticks = pygame.time.get_ticks() # 시작 tick을 가져옴
+
+# 폰트 객체 생성
+game_font = pygame.font.Font(None, 40)
 
 while isGameOn:
     dt = clock.tick(60)
@@ -42,7 +42,13 @@ while isGameOn:
         print("충돌 발생!")
         isGameOn = False
 
-    gf.update_screen(screen, background, character, enemy)
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 경과 시간(ms)을 1000으로 나누어 초 단위로 표시.
+    timer = game_font.render(str(int(settings.total_time - elapsed_time)), True, (255, 255, 255))
+
+    if elapsed_time >= settings.total_time:
+        isGameOn = False
+    
+    gf.update_screen(screen, background, character, enemy, timer)
 
 pygame.time.delay(1000) # 1초 정도 대기
 pygame.quit()

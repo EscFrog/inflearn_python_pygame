@@ -16,8 +16,9 @@ def check_collision(character, enemy):
 
     return character.rect.colliderect(enemy.rect)
 
-def update_screen(screen, background, character, enemy):
+def update_screen(screen, background, character, enemy, timer):
     screen.blit(background, (0, 0))
     screen.blit(character.image, character.rect)
     screen.blit(enemy.image, enemy.rect)
+    screen.blit(timer, (10, 10))
     pygame.display.update()
