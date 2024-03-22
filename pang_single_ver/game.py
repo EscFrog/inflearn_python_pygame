@@ -103,7 +103,7 @@ game_result = "Game Over"
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True
 while isGameOn:
-  dt = clock.tick(60)
+  dt = clock.tick(30)
 
   # 2. 이벤트 처리 (키보드, 마우스 등)
   for event in pygame.event.get():
@@ -229,8 +229,11 @@ while isGameOn:
             "init_spd_y": ball_speed_y[ball_img_idx + 1]
             }
           )
-        
-        break
+          break
+    else:
+      continue
+
+    break
   
   # 충돌된 공 or 무기 없애기
   if ball_to_remove > -1:
