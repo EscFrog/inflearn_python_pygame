@@ -19,7 +19,7 @@ clock = pygame.time.Clock()
 # 1. 사용자 게임 초기화 (배경 화면, 게임 이미지, 좌표, 속도, 폰트 등)
 # 이미지 경로 설정
 current_path = os.path.dirname(__file__)
-img_path = os.path.join(current_path, "images",)
+img_path = os.path.join(current_path, "..", "assets",)
 
 bg_img = os.path.join(img_path, "background.png")
 stage_img = os.path.join(img_path, "stage.png")
