@@ -70,7 +70,7 @@ ball_images = [
 ]
 
 # 공 크기에 따른 최초 스피드
-ball_speed_y = [-1.2, -0.9, -0.6, -0.3]
+ball_speed_y = [-1, -0.8, -0.6, -0.4]
 
 # 공들
 balls = []
@@ -81,13 +81,24 @@ balls.append({
   "pos_y": 50,
   "img_idx": 0,
   "to_x": 0.3,
-  "to_y": -0.8,
+  "to_y": -0.4,
   "init_spd_y": ball_speed_y[0]
 })
 
 # 사라질 무기, 공 정보 저장 변수
 weapon_to_remove = -1
 ball_to_remove = -1
+
+# Font 정의
+game_font = pygame.font.Font(None, 40)
+total_time = 100
+start_ticks = pygame.time.get_ticks() # 시작 시간 정의
+
+# 게임 종료 메시지
+# Time Over (시간 초과로 실패)
+# Mission Complete(성공)
+# Game Over (캐릭터가 공에 맞아 실패)
+game_result = "Game Over"
 
 # 이벤트 루프 (프레임 마다 실행)
 isGameOn = True
@@ -203,7 +214,7 @@ while isGameOn:
             "pos_y": ball_pos_y + (ball_height / 2) - (small_ball_height / 2),
             "img_idx": ball_img_idx + 1,
             "to_x": -0.3,
-            "to_y": -0.8,
+            "to_y": -0.4,
             "init_spd_y": ball_speed_y[ball_img_idx + 1]
             }
           )
@@ -214,7 +225,7 @@ while isGameOn:
             "pos_y": ball_pos_y + (ball_height / 2) - (small_ball_height / 2),
             "img_idx": ball_img_idx + 1,
             "to_x": 0.3,
-            "to_y": -0.8,
+            "to_y": -0.4,
             "init_spd_y": ball_speed_y[ball_img_idx + 1]
             }
           )
@@ -230,6 +241,10 @@ while isGameOn:
     del weapons[weapon_to_remove]
     weapon_to_remove = -1
   
+  # 모든 공을 없앤 경우 게임 종료 (성공)
+  if len(balls) == 0:
+    game_result = "Mission Complete"
+    isGameOn = False
   
   # 5. 화면에 그리기
   screen.blit(bg, (0, 0))
@@ -246,8 +261,23 @@ while isGameOn:
   screen.blit(stage, (0, screen_height - stage_height))
   screen.blit(character, (character_x_pos, character_y_pos))
 
+  # 경과 시간 계산
+  elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # ms -> s
+  timer = game_font.render(f"Time : {int(total_time - elapsed_time)}", True, (255, 255, 255))
+  screen.blit(timer, (10, 10))
+
+  # 시간 초과했다면
+  if total_time - elapsed_time <= 0:
+    game_result = "Time Over"
+    isGameOn = False
+
   pygame.display.update() # 게임 화면을 다시 그리기!
 
 # pygame 종료
-pygame.time.delay(1000)
+msg = game_font.render(game_result, True, (255, 255, 0))
+msg_rect = msg.get_rect(center=(int(screen_width / 2), int(screen_height / 2)))
+screen.blit(msg, msg_rect)
+pygame.display.update()
+
+pygame.time.delay(2000)
 pygame.quit()
