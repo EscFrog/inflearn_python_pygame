@@ -18,8 +18,9 @@ def check_collision(character, enemies):
     if character.rect.colliderect(enemy.rect):
       return True
 
-def update_screen(screen, background, character, enemies, timer):
+def update_screen(screen, background, stage, character, enemies, timer):
   screen.blit(background, (0, 0))
+  screen.blit(stage, (0, 0))
   screen.blit(character.image, character.rect)
   for enemy in enemies:
     screen.blit(enemy.image, enemy.rect)

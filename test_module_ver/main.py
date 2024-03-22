@@ -1,16 +1,16 @@
 # main.py
 import pygame
 import settings
-from game_objects import Character, Enemy
+from game_objects import Character, Ball
 import game_functions as gf
 
 pygame.init()
 screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
 pygame.display.set_caption(settings.title)
 
-background = pygame.image.load(settings.bg_img_path)
-character = Character(settings.character_img_path)
-enemy = Enemy(settings.enemy_img_path)
+background = pygame.image.load(settings.bg_img)
+character = Character(settings.character_img)
+enemy = Ball(settings.ball1_img)
 
 isGameOn = True
 clock = pygame.time.Clock()

@@ -1,28 +1,29 @@
 # main.py
 import pygame
 import settings
-from game_objects import Character, Enemy
+from game_objects import Character, Ball
 import game_functions as gf
 
 pygame.init()
 pygame.display.set_caption(settings.title)
 
-character = Character(settings.character_img_path)
-enemies = []
+# 캐릭터 객체 인스턴스화
+character = Character(settings.character_img)
+
+# 무기와 공 인스턴스를 담을 배열 선언
+weapons = []
+balls = []
 
 screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
 
 isGameOn = True
 clock = pygame.time.Clock()
 
-# 시간 시간 정보
-start_ticks = pygame.time.get_ticks() # 시작 tick을 가져옴
+# 시간 시간 확인
+start_ticks = pygame.time.get_ticks()
 
 # 폰트 객체 생성
-game_font = pygame.font.Font(None, 60)
 
-last_enemy_spawn_time = 0 # 적을 마지막으로 생성한 시점
-spawn_enemy_interval = 1000 # 적을 생성하는 간격 (밀리초 단위)
 
 while isGameOn:
     dt = clock.tick(30)
@@ -37,29 +38,22 @@ while isGameOn:
         character.rect.x -= character.speed * dt
     if keys[pygame.K_RIGHT]:
         character.rect.x += character.speed * dt
-    
-    # 적 생성
-    if current_time - last_enemy_spawn_time > spawn_enemy_interval:
-        enemies.append(Enemy(settings.enemy_img_path))
-        last_enemy_spawn_time = current_time  # 마지막 적 생성 시간 업데이트
 
-    # 적 이동 업데이트
-    for enemy in enemies:
-        enemy.fall(dt)
-        if enemy.rect.y > settings.screen_height:
-            enemies.remove(enemy)  # 화면 밖으로 나간 적 제거
+    # 공 움직임 실행
+    for ball in balls:
+        ball.bounce(dt)
 
-    if gf.check_collision(character, enemies):
-        print("충돌 발생!")
+    # 공과 캐릭터 충돌 처리
+    if gf.check_collision(character, balls):
         isGameOn = False
 
     elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 경과 시간(ms)을 1000으로 나누어 초 단위로 표시.
-    timer = game_font.render(str(int(settings.total_time - elapsed_time)), True, (255, 0, 0))
+    timer = settings.game_font.render(str(int(settings.total_time - elapsed_time)), True, (255, 0, 0))
 
     if elapsed_time >= settings.total_time:
         isGameOn = False
 
-    gf.update_screen(screen, settings.background, character, enemies, timer)
+    gf.update_screen(screen, settings.background, character, balls, timer)
 
 pygame.time.delay(1000) # 1초 정도 대기
 pygame.quit()

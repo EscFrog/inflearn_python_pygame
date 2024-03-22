@@ -1,13 +1,13 @@
 # main.py
 import pygame
 import settings
-from game_objects import Character, Enemy
+from game_objects import Character, Ball
 import game_functions as gf
 
 pygame.init()
 pygame.display.set_caption(settings.title)
 
-character = Character(settings.character_img_path)
+character = Character(settings.character_img)
 enemies = []
 
 screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
@@ -40,12 +40,12 @@ while isGameOn:
     
     # 적 생성
     if current_time - last_enemy_spawn_time > spawn_enemy_interval:
-        enemies.append(Enemy(settings.enemy_img_path))
+        enemies.append(Ball(settings.ball1_img))
         last_enemy_spawn_time = current_time  # 마지막 적 생성 시간 업데이트
 
     # 적 이동 업데이트
     for enemy in enemies:
-        enemy.fall(dt)
+        enemy.bounce(dt)
         if enemy.rect.y > settings.screen_height:
             enemies.remove(enemy)  # 화면 밖으로 나간 적 제거
 
