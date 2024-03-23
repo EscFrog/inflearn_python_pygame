@@ -27,6 +27,13 @@ start_ticks = pygame.time.get_ticks()
 # 폰트 객체 생성
 game_font = pygame.font.Font(None, 40)
 
+# 최초 공 생성
+balls.append(Ball(0, 50)) 
+balls.append(Ball(50, 50, ball_type=1)) 
+balls.append(Ball(100, 50, ball_type=2)) 
+balls.append(Ball(150, 50, ball_type=3)) 
+
+
 
 while isGameOn:
     dt = clock.tick(30)
@@ -55,9 +62,9 @@ while isGameOn:
     for ball in balls:
         ball.bounce(dt)
 
-    # 공과 캐릭터 충돌 처리
-    if gf.check_collision(character, balls):
-        isGameOn = False
+    # # 공과 캐릭터 충돌 처리
+    # if gf.check_collision(character, balls):
+    #     isGameOn = False
     
     # 삭제 가능해진 무기는 무기 리스트에서 삭제
     for index, instance in enumerate(weapons):
