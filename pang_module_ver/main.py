@@ -66,43 +66,27 @@ while isGameOn:
     if gf.check_collision(character, balls):
         isGameOn = False
 
-    # 공과 무기 충돌 처리
-    for weapon_idx, weapon_instance in enumerate(weapons):
-        for ball_index, ball_instance in enumerate(balls):
-            if ball_instance.rect.colliderect(weapon_instance.rect):
-                # 충돌한 인스턴스들 삭제 가능으로 표시
-                if not weapon_instance.deletable:
-                    weapon_instance.deletable = True
-                    ball_instance.deletable = True
+    collided_balls = []  # 충돌한 공의 인덱스와 방향을 저장할 리스트
 
-                 # 다음에 소환할 공이 있으면 다음 단계 공 생성
-                if ball_instance.ball_type + 1 < len(settings.ball_images):
-                    balls.append(
-                        Ball(
-                            ball_instance.rect.x,
-                            ball_instance.rect.y,
-                            ball_type_num = ball_instance.ball_type + 1,
-                            init_direction = "right"
-                            )
-                        )
-                    # 다음 단계 공 생성
-                    balls.append(
-                        Ball(
-                            ball_instance.rect.x,
-                            ball_instance.rect.y,
-                            ball_type_num = ball_instance.ball_type + 1,
-                            init_direction = "left"
-                            )
-                        )
+    # 공과 무기 충돌 처리
+    for weapon in weapons:
+        for ball in balls:
+            if ball.rect.colliderect(weapon.rect):
+                weapon.deletable = True
+                if not ball.deletable: # 이미 처리된 공은 다시 처리하지 않음
+                    ball.deletable = True
+                    collided_balls.append(ball)
+
+    for ball in collided_balls:
+        # 다음에 소환할 공이 있으면 다음 단계 공 생성
+        next_ball_type = ball.ball_type + 1
+        if next_ball_type < len(settings.ball_images):
+            balls.append(Ball(ball.rect.x, ball.rect.y, ball_type_num = next_ball_type, init_direction = "left"))
+            balls.append(Ball(ball.rect.x, ball.rect.y, ball_type_num = next_ball_type, init_direction = "right"))     
     
-    # 삭제 예정으로 처리한 공과 무기들 삭제
-    for weapon_index, weapon_instance in enumerate(weapons):
-        if weapon_instance.deletable == True:
-            del weapons[weapon_index]
-    
-    for ball_index, ball_instance in enumerate(balls):
-        if ball_instance.deletable == True:
-            del balls[ball_index]
+    # 삭제 가능한 공과 무기들 삭제
+    weapons = [weapon for weapon in weapons if not weapon.deletable]
+    balls = [ball for ball in balls if not ball.deletable]
     
     if len(balls) == 0:
         game_result = "Mission Complete"
