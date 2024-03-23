@@ -23,11 +23,14 @@ class Ball(Game_object):
         self.ball_type = ball_type_num
         self.rect.x = pos_x
         self.rect.y = pos_y
+        
+        # 처음 속도는 설정 속도의 2/3
         if init_direction == "left":
-            self.velocity_x = -settings.ball_speed[ball_type_num][0] / 2 # 처음 속도는 설정 속도의 절반
+            self.velocity_x = -settings.ball_speed[ball_type_num][0] * (2 / 3)
         else:
-            self.velocity_x = settings.ball_speed[ball_type_num][0] / 2 # 처음 속도는 설정 속도의 절반
-        self.velocity_y = settings.ball_speed[ball_type_num][1] / 2 # 처음 속도는 설정 속도의 절반
+            self.velocity_x = settings.ball_speed[ball_type_num][0] * (2 / 3)
+        self.velocity_y = settings.ball_speed[ball_type_num][1] * (2 / 3)
+        
         self.initial_velocity_y = settings.ball_speed[ball_type_num][1]  # 초기 낙하 속도 저장
         self.deletable = False
     
