@@ -48,6 +48,16 @@ class Ball(Game_object):
         if self.rect.y >= settings.screen_height - settings.stage_height - self.rect.height:
             self.rect.y = settings.screen_height - settings.stage_height - self.rect.height  # 위치 조정
             self.velocity_y = -abs(self.initial_velocity_y)  # 초기 세로 속도로 재설정
+    
+    def split(self):
+        # 공 분열 로직 구현
+        if self.ball_type < len(settings.ball_images) - 1:  # 다음 단계의 공이 있을 경우에만 분열
+            next_ball_type = self.ball_type + 1
+            # 분열된 공의 초기 위치 및 방향 설정
+            left_ball = Ball(self.rect.x, self.rect.y, next_ball_type, init_direction="left")
+            right_ball = Ball(self.rect.x, self.rect.y, next_ball_type, init_direction="right")
+            return [left_ball, right_ball]
+        return []
 
 
 class Weapon(Game_object):
