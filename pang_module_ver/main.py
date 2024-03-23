@@ -62,8 +62,9 @@ while isGameOn:
         for ball_index, ball_instance in enumerate(balls):
             if ball_instance.rect.colliderect(weapon_instance.rect):
                 # 충돌한 인스턴스들 삭제 가능으로 표시
-                weapon_instance.deletable = True
-                ball_instance.deletable = True
+                if not weapon_instance.deletable:
+                    weapon_instance.deletable = True
+                    ball_instance.deletable = True
 
                  # 다음에 소환할 공이 있으면 다음 단계 공 생성
                 if ball_instance.ball_type + 1 < len(settings.ball_images):
