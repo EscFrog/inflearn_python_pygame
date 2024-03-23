@@ -1,11 +1,27 @@
 # main.py
 import pygame
+import random
 import settings
 from game_objects import Character, Ball, Weapon
 import game_functions as gf
 
 pygame.init()
 pygame.display.set_caption(settings.title)
+
+# 게임 화면 생성
+screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
+
+isGameOn = True
+clock = pygame.time.Clock()
+
+# 시작 시간 확인
+start_ticks = pygame.time.get_ticks()
+
+# 폰트 객체 생성
+game_font = pygame.font.Font(None, 40)
+
+# 게임 종료 메시지
+game_result = "Game Over"
 
 # 캐릭터 객체 인스턴스화
 character = Character(settings.character_img)
@@ -16,19 +32,8 @@ weapons = []
 # 공 인스턴스를 담을 배열 선언
 balls = []
 
-screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
-
-isGameOn = True
-clock = pygame.time.Clock()
-
-# 시간 시간 확인
-start_ticks = pygame.time.get_ticks()
-
-# 폰트 객체 생성
-game_font = pygame.font.Font(None, 40)
-
 # 최초 공 생성
-balls.append(Ball(0, 50)) 
+balls.append(Ball(random.randint(0, settings.screen_width - 200), 50)) 
 
 while isGameOn:
     dt = clock.tick(30)
@@ -56,6 +61,10 @@ while isGameOn:
     # 공 움직임 실행
     for ball in balls:
         ball.bounce(dt)
+
+    # 공과 캐릭터 충돌 처리
+    if gf.check_collision(character, balls):
+        isGameOn = False
 
     # 공과 무기 충돌 처리
     for weapon_idx, weapon_instance in enumerate(weapons):
@@ -94,18 +103,24 @@ while isGameOn:
     for ball_index, ball_instance in enumerate(balls):
         if ball_instance.deletable == True:
             del balls[ball_index]
-
-    # # 공과 캐릭터 충돌 처리
-    # if gf.check_collision(character, balls):
-    #     isGameOn = False
     
+    if len(balls) == 0:
+        game_result = "Mission Complete"
+        isGameOn = False
+
     elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 경과 시간(ms)을 1000으로 나누어 초 단위로 표시.
     timer = game_font.render(str(int(settings.total_time - elapsed_time)), True, (255, 0, 0))
 
     if elapsed_time >= settings.total_time:
+        game_result = "Time Over"
         isGameOn = False
 
     gf.update_screen(screen, character, weapons, balls, timer)
 
-pygame.time.delay(1000) # 1초 정도 대기
+msg = game_font.render(game_result, True, (255, 255, 0))
+msg_rect = msg.get_rect(center=(int(settings.screen_width / 2), int(settings.screen_height / 2)))
+screen.blit(msg, msg_rect)
+pygame.display.update()
+
+pygame.time.delay(1500) # 1.5초 정도 대기
 pygame.quit()

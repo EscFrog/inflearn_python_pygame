@@ -5,7 +5,7 @@ import pygame
 title = "Escfrog Pang!"
 
 # 총 플레이 시간
-total_time = 120
+total_time = 60
 
 # 리소스 경로 세팅
 current_dir = os.path.dirname(__file__)
