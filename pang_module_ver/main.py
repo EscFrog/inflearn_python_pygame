@@ -29,11 +29,6 @@ game_font = pygame.font.Font(None, 40)
 
 # 최초 공 생성
 balls.append(Ball(0, 50)) 
-balls.append(Ball(50, 50, ball_type=1)) 
-balls.append(Ball(100, 50, ball_type=2)) 
-balls.append(Ball(150, 50, ball_type=3)) 
-
-
 
 while isGameOn:
     dt = clock.tick(30)
@@ -62,15 +57,47 @@ while isGameOn:
     for ball in balls:
         ball.bounce(dt)
 
+    # 공과 무기 충돌 처리
+    for weapon_idx, weapon_instance in enumerate(weapons):
+        for ball_index, ball_instance in enumerate(balls):
+            if ball_instance.rect.colliderect(weapon_instance.rect):
+                # 충돌한 인스턴스들 삭제 가능으로 표시
+                weapon_instance.deletable = True
+                ball_instance.deletable = True
+
+                 # 다음에 소환할 공이 있으면 다음 단계 공 생성
+                if ball_instance.ball_type + 1 < len(settings.ball_images):
+                    balls.append(
+                        Ball(
+                            ball_instance.rect.x,
+                            ball_instance.rect.y,
+                            ball_type_num = ball_instance.ball_type + 1,
+                            init_direction = "right"
+                            )
+                        )
+                    # 다음 단계 공 생성
+                    balls.append(
+                        Ball(
+                            ball_instance.rect.x,
+                            ball_instance.rect.y,
+                            ball_type_num = ball_instance.ball_type + 1,
+                            init_direction = "left"
+                            )
+                        )
+    
+    # 삭제 예정으로 처리한 공과 무기들 삭제
+    for weapon_index, weapon_instance in enumerate(weapons):
+        if weapon_instance.deletable == True:
+            del weapons[weapon_index]
+    
+    for ball_index, ball_instance in enumerate(balls):
+        if ball_instance.deletable == True:
+            del balls[ball_index]
+
     # # 공과 캐릭터 충돌 처리
     # if gf.check_collision(character, balls):
     #     isGameOn = False
     
-    # 삭제 가능해진 무기는 무기 리스트에서 삭제
-    for index, instance in enumerate(weapons):
-        if instance.Deletable == True:
-            del weapons[index]
-
     elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 경과 시간(ms)을 1000으로 나누어 초 단위로 표시.
     timer = game_font.render(str(int(settings.total_time - elapsed_time)), True, (255, 0, 0))
 

@@ -18,13 +18,18 @@ class Character(Game_object):
 
 
 class Ball(Game_object):
-    def __init__(self, pos_x, pos_y, ball_type=0):
-        super().__init__(settings.ball_images[ball_type])
+    def __init__(self, pos_x, pos_y, ball_type_num=0, init_direction="right"):
+        super().__init__(settings.ball_images[ball_type_num])
+        self.ball_type = ball_type_num
         self.rect.x = pos_x
         self.rect.y = pos_y
-        self.velocity_x = settings.ball_speed[ball_type][0]
-        self.velocity_y = settings.ball_speed[ball_type][1]
-        self.initial_velocity_y = settings.ball_speed[ball_type][1]  # 초기 속도 저장
+        if init_direction == "left":
+            self.velocity_x = -settings.ball_speed[ball_type_num][0] / 2 # 처음 속도는 설정 속도의 절반
+        else:
+            self.velocity_x = settings.ball_speed[ball_type_num][0] / 2 # 처음 속도는 설정 속도의 절반
+        self.velocity_y = settings.ball_speed[ball_type_num][1] / 2 # 처음 속도는 설정 속도의 절반
+        self.initial_velocity_y = settings.ball_speed[ball_type_num][1]  # 초기 낙하 속도 저장
+        self.deletable = False
     
     def bounce(self, dt):
         self.rect.x += self.velocity_x * dt
@@ -48,10 +53,10 @@ class Weapon(Game_object):
         self.rect.x = character.rect.x
         self.rect.y = character.rect.y
         self.speed = settings.weapon_speed
-        self.Deletable = False
+        self.deletable = False
     
     def flyProjectile(self, dt):
         self.rect.y -= self.speed * dt
-        # 화면 밖으로 나간 무기는 삭제 가능으로 변경
+        # 화면 밖으로 나가면 삭제 가능으로 표시
         if self.rect.y + self.rect.height <= 0:
-            self.Deletable = True
+            self.deletable = True

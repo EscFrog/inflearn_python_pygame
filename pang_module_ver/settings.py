@@ -15,6 +15,8 @@ bg_img = os.path.join(asset_path, 'background.png')
 stage_img = os.path.join(asset_path, 'stage.png')
 character_img = os.path.join(asset_path, 'character.png')
 weapon_img = os.path.join(asset_path, 'weapon.png')
+
+# 공 이미지 리스트. 공이 분열하려면 이 리스트를 참조해서 다음 공이 있는지를 판단한다.
 ball_images = [
   os.path.join(asset_path, 'ball1.png'),
   os.path.join(asset_path, 'ball2.png'),
@@ -44,7 +46,7 @@ character_speed = 0.5
 weapon_speed = 0.5
 
 # 공 속도
-ball_speed = [(0.3, 1.0), (0.3, 0.84), (0.3, 0.68), (0.3, 0.52)]
+ball_speed = [(0.3, -1.0), (0.3, -0.84), (0.3, -0.68), (0.3, -0.52)]
 
 # 공에 적용할 중력
 gravity = 0.05
