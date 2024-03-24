@@ -45,11 +45,11 @@ while isGameOn:
 
     # 적 이동 업데이트
     for enemy in enemies:
-        enemy.bounce(dt)
+        enemy.move(dt)
         if enemy.rect.y > settings.screen_height:
             enemies.remove(enemy)  # 화면 밖으로 나간 적 제거
 
-    if gf.check_collision(character, enemies):
+    if gf.check_boundery(character, enemies):
         print("충돌 발생!")
         isGameOn = False
 

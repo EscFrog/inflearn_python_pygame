@@ -1,5 +1,6 @@
 import os
 import pygame
+from random import randint
 
 # 게임 타이틀
 title = "Escfrog Pang!"
@@ -50,3 +51,8 @@ ball_speed = [(0.3, -1.0), (0.3, -0.84), (0.3, -0.68), (0.3, -0.52)]
 
 # 공에 적용할 중력
 gravity = 0.05
+
+# 첫 번째 공이 생성될 위치
+padding = 200
+first_ball_pos_x = randint(padding, screen_width - padding)
+first_ball_pos_y = 50

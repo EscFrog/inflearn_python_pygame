@@ -15,6 +15,17 @@ class Character(Game_object):
         self.rect.x = (settings.screen_width - self.rect.width) / 2
         self.rect.y = settings.floor_pos - self.rect.height
         self.speed = settings.character_speed
+    
+    def move(self, dt, direction="right"):
+        if direction == "left":
+            self.rect.x -= self.speed * dt
+        else:
+            self.rect.x += self.speed * dt
+        # 경계 밖으로 안 나가는 처리
+        if self.rect.x < 0:
+            self.rect.x = 0
+        elif self.rect.x > (settings.screen_width - self.rect.width):
+            self.rect.x = (settings.screen_width - self.rect.width)
 
 
 class Ball(Game_object):
@@ -34,7 +45,7 @@ class Ball(Game_object):
         self.initial_velocity_y = settings.ball_speed[ball_type_num][1]  # 초기 낙하 속도 저장
         self.deletable = False
     
-    def bounce(self, dt):
+    def move(self, dt):
         self.rect.x += self.velocity_x * dt
         self.rect.y += self.velocity_y * dt
 
@@ -68,7 +79,7 @@ class Weapon(Game_object):
         self.speed = settings.weapon_speed
         self.deletable = False
     
-    def flyProjectile(self, dt):
+    def move(self, dt):
         self.rect.y -= self.speed * dt
         # 화면 밖으로 나가면 삭제 가능으로 표시
         if self.rect.y + self.rect.height <= 0:
